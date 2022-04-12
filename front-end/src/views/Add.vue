@@ -1,18 +1,22 @@
 <template>
 <div class="admin">
 
-  <h1>The Admin Page!</h1>
+  <h1>Add Recipes Here!</h1>
+
   <div class="heading">
-    <div class="circle">1</div>
-    <h2>Add an Item</h2>
+    <h2>Add a Recipe</h2>
   </div>
+
   <div class="add">
     <div class="form">
       <div class="holder">
-        <input v-model="title" placeholder="Title">
-        <textarea v-model="description" placeholder="Description"></textarea>
+        <input v-model="title" placeholder="Recipe Title">
+        <textarea v-model="description" placeholder="Ingredients"></textarea>
+        <textarea v-model="instructions" placeholder="Instructions"></textarea>
+        <textarea v-model="notes" placeholder="Notes"></textarea>
       </div>
       <p></p>
+      <p>Choose Photo</p>
       <input type="file" name="photo" @change="fileChanged">
       <button @click="upload">Upload</button>
     </div>
@@ -23,9 +27,9 @@
   </div>
 
   <div class="heading">
-    <div class="circle">2</div>
-    <h2>Edit/Delete an Item</h2>
+    <h2>Change or Delete a Recipe</h2>
   </div>
+
   <div class="edit">
     <div class="form">
       <input v-model="findTitle" placeholder="Search">
@@ -146,11 +150,14 @@ export default {
   display: flex;
   margin-bottom: 20px;
   margin-top: 20px;
+  background-color: grey;
 }
 
 .heading h2 {
   margin-top: 8px;
   margin-left: 10px;
+  color: pink;
+  text-align: center;
 }
 
 .add,

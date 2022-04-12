@@ -1,21 +1,25 @@
 <template>
 <div id="app">
+
   <div class="header">
     <router-link to="/">
       <div class="logo">
-        <img src="/ordinary.png">
+        <img class="logo-image" src="/grandma.png">
       </div>
     </router-link>
     <div class="title">
-      <h1>Museum of Ordinary Objects</h1>
+      <h1>Grandma's Cookbook</h1>
     </div>
   </div>
+
   <div class="content">
     <router-view />
   </div>
+
   <div class="footer">
-    <router-link to="/admin">Admin</router-link>
+    <router-link to="/add">Add Recipes</router-link>
   </div>
+
 </div>
 </template>
 
@@ -35,9 +39,16 @@ body {
 /* Header */
 .header {
   display: flex;
-  padding: 10px 100px 0px 100px;
-  background-color: #5BDEFF;
-  color: #1C454F;
+  justify-content: center;
+  padding: 10px 10px 0px 10px;
+  background-color: grey;
+  color: pink;
+}
+
+.logo-image {
+  height: 100px;
+  width: auto;
+  margin-right: 30px;
 }
 
 .title {
@@ -56,13 +67,14 @@ body {
 /* Footer */
 .footer {
   height: 50px;
-  padding: 20px 100px 0px 100px;
-  background: #e3e3e3;
+  text-align: center;
+  padding-top: 25px;
+  background: grey;
   font-size: 12px;
 }
 
 .footer a {
-  color: #000;
+  color: white;
 }
 
 h1 {

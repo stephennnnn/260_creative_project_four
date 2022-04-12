@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost:27017/museum', {
   useNewUrlParser: true
 });
 
-// Create a new item in the museum: takes a title and a path to an image.
+// create new recipe
 app.post('/api/items', async (req, res) => {
   const item = new Item({
     title: req.body.title,
@@ -38,13 +38,13 @@ const upload = multer({
   }
 });
 
-// Create a scheme for items in the museum: a title and a path to an image.
+// Create a scheme for grandma's recipes
 const itemSchema = new mongoose.Schema({
   title: String,
   description: String,
   path: String,
 });
-// Create a model for items in the museum.
+// Create a model for grandma's recipes
 const Item = mongoose.model('Item', itemSchema);
 
 // Upload a photo. Uses the multer middleware for the upload and then returns
@@ -59,7 +59,7 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
   });
 });
 
-// Get a list of all of the items in the museum.
+// Get a list of all of grandma's recipes
 app.get('/api/items', async (req, res) => {
   try {
     let items = await Item.find();
@@ -70,7 +70,7 @@ app.get('/api/items', async (req, res) => {
   }
 });
 
-// delete item in database.
+// delete recipe from database.
 app.delete('/api/items/:id', async (req, res) => {
   try {
     await Item.deleteOne({
@@ -83,7 +83,7 @@ app.delete('/api/items/:id', async (req, res) => {
   }
 });
 
-// edit item in database.
+// edit recipe in database.
 app.put('/api/items/:id', async (req, res) => {
   try {
     const item = await Item.findOne({

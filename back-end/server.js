@@ -9,20 +9,22 @@ app.use(bodyParser.urlencoded({
 
 const mongoose = require('mongoose');
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/museum', {
+mongoose.connect('mongodb://localhost:27017/recipes', {
   useNewUrlParser: true
 });
 
 // create new recipe
-app.post('/api/items', async (req, res) => {
-  const item = new Item({
-    title: req.body.title,
-    description: req.body.description,
+app.post('/api/recipes', async (req, res) => {
+  const recipe = new Recipe({
+    recipeName: req.body.recipeName,
+    ingredients: req.body.ingredients,
+    instructions: req.body.instructions,
+    notes: req.body.notes,
     path: req.body.path,
   });
   try {
-    await item.save();
-    res.send(item);
+    await recipe.save();
+    res.send(recipe);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -39,13 +41,15 @@ const upload = multer({
 });
 
 // Create a scheme for grandma's recipes
-const itemSchema = new mongoose.Schema({
-  title: String,
-  description: String,
+const recipeSchema = new mongoose.Schema({
+  recipeName: String,
+  ingredients: String,
+  instructions: String,
+  notes: String,
   path: String,
 });
 // Create a model for grandma's recipes
-const Item = mongoose.model('Item', itemSchema);
+const Recipe = mongoose.model('Recipe', recipeSchema);
 
 // Upload a photo. Uses the multer middleware for the upload and then returns
 // the path where the photo is stored in the file system.
@@ -60,10 +64,10 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
 });
 
 // Get a list of all of grandma's recipes
-app.get('/api/items', async (req, res) => {
+app.get('/api/recipes', async (req, res) => {
   try {
-    let items = await Item.find();
-    res.send(items);
+    let recipes = await Recipe.find();
+    res.send(recipes);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -71,9 +75,9 @@ app.get('/api/items', async (req, res) => {
 });
 
 // delete recipe from database.
-app.delete('/api/items/:id', async (req, res) => {
+app.delete('/api/recipes/:id', async (req, res) => {
   try {
-    await Item.deleteOne({
+    await Recipe.deleteOne({
       _id: req.params.id
     });
     res.sendStatus(200);
@@ -84,14 +88,16 @@ app.delete('/api/items/:id', async (req, res) => {
 });
 
 // edit recipe in database.
-app.put('/api/items/:id', async (req, res) => {
+app.put('/api/recipes/:id', async (req, res) => {
   try {
-    const item = await Item.findOne({
+    const recipe = await Recipe.findOne({
       _id: req.params.id
     });
-    item.title = req.body.title;
-    item.description = req.body.description;
-    await item.save();
+    recipe.recipeName = req.body.recipeName;
+    recipe.ingredients = req.body.ingredients;
+    recipe.instructions = req.body.instructions;
+    recipe.notes = req.body.notes;
+    await recipe.save();
     res.sendStatus(200);
   } catch (error) {
     console.long(error);

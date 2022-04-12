@@ -10,19 +10,17 @@
   <div class="add">
     <div class="form">
       <div class="holder">
-        <input v-model="title" placeholder="Recipe Title">
-        <textarea v-model="description" placeholder="Ingredients"></textarea>
+        <input type="file" name="photo" @change="fileChanged">
+        <input v-model="recipeName" placeholder="Recipe Name">
+        <textarea v-model="ingredients" placeholder="Ingredients"></textarea>
         <textarea v-model="instructions" placeholder="Instructions"></textarea>
         <textarea v-model="notes" placeholder="Notes"></textarea>
       </div>
-      <p></p>
-      <p>Choose Photo</p>
-      <input type="file" name="photo" @change="fileChanged">
       <button @click="upload">Upload</button>
     </div>
-    <div class="upload" v-if="addItem">
-      <h2>{{addItem.title}}</h2>
-      <img :src="addItem.path" />
+    <div class="upload" v-if="addRecipe">
+      <img :src="addRecipe.path" />
+      <h2>{{addRecipe.recipeName}}</h2>
     </div>
   </div>
 
@@ -32,23 +30,24 @@
 
   <div class="edit">
     <div class="form">
-      <input v-model="findTitle" placeholder="Search">
+      <input v-model="findRecipeName" placeholder="Search">
       <div class="suggestions" v-if="suggestions.length > 0">
-        <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
+        <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectRecipe(s)">{{s.recipeName}}
         </div>
       </div>
     </div>
-    <div class="upload" v-if="findItem">
+    <div class="upload" v-if="findRecipe">
       <div class="holder">
-        <input v-model="findItem.title">
-        <textarea v-model="findItem.description"></textarea>
+        <img :src="findRecipe.path" />
+        <input v-model="findRecipe.recipeName">
+        <textarea v-model="findRecipe.ingredients"></textarea>
+        <textarea v-model="findRecipe.instructions"></textarea>
+        <textarea v-model="findRecipe.notes"></textarea>
       </div>
-      <p></p>
-      <img :src="findItem.path" />
     </div>
-    <div class="actions" v-if="findItem">
-      <button @click="deleteItem(findItem)">Delete</button>
-      <button @click="editItem(findItem)">Edit</button>
+    <div class="actions" v-if="findRecipe">
+      <button @click="deleteRecipe(findRecipe)">Delete</button>
+      <button @click="editRecipe(findRecipe)">Edit</button>
     </div>
   </div>
 
@@ -59,26 +58,28 @@
 <script>
 import axios from 'axios';
 export default {
-  name: 'Admin',
+  name: 'Add',
     data() {
     return {
-      title: "",
-      description: "",
+      recipeName: "",
+      ingredients: "",
+      instructions: "",
+      notes: "",
       file: null,
-      addItem: null,
-      items: [],
-      findTitle: "",
-      findItem: null,
+      addRecipe: null,
+      recipes: [],
+      findRecipeName: "",
+      findRecipe: null,
     }
   },
   computed: {
     suggestions() {
-      let items = this.items.filter(item => item.title.toLowerCase().startsWith(this.findTitle.toLowerCase()));
-      return items.sort((a, b) => a.title > b.title);
+      let recipes = this.recipes.filter(recipe => recipe.recipeName.toLowerCase().startsWith(this.findRecipeName.toLowerCase()));
+      return recipes.sort((a, b) => a.recipeName > b.recipeName);
     }
   },
   created() {
-    this.getItems();
+    this.getRecipes();
   },
   methods: {
     fileChanged(event) {
@@ -89,47 +90,52 @@ export default {
         const formData = new FormData();
         formData.append('photo', this.file, this.file.name)
         let r1 = await axios.post('/api/photos', formData);
-        let r2 = await axios.post('/api/items', {
-          title: this.title,
-          description: this.description,
+        let r2 = await axios.post('/api/recipes', {
+          recipeName: this.recipeName,
+          ingredients: this.ingredients,
+          instructions: this.instructions,
+          notes: this.notes,
           path: r1.data.path
         });
-        this.addItem = r2.data;
+        this.addRecipe = r2.data;
       } catch (error) {
         console.log(error);
       }
     },
-    async getItems() {
+    async getRecipes() {
       try {
-        let response = await axios.get("/api/items");
-        this.items = response.data;
+        let response = await axios.get("/api/recipes");
+        this.recipes = response.data;
         return true;
       } catch (error) {
         console.log(error);
       }
     },
-    selectItem(item) {
-      this.findTitle = "";
-      this.findItem = item;
+    selectRecipe(recipe) {
+      this.findRecipeName = "";
+      this.findRecipe = recipe;
     },
-    async deleteItem(item) {
+    async deleteRecipe(recipe) {
       try {
-        await axios.delete("/api/items/" + item._id);
-        this.findItem = null;
-        this.getItems();
+        await axios.delete("/api/recipes/" + recipe._id);
+        this.findRecipe = null;
+        this.getRecipes();
         return true;
       } catch (error) {
         console.log(error);
       }
     },
-    async editItem(item) {
+    async editRecipe(recipe) {
       try {
-        await axios.put("/api/items/" + item._id, {
-          title: this.findItem.title,
-          description: this.findItem.description,
+        await axios.put("/api/recipes/" + recipe._id, {
+          recipeName: this.findRecipe.recipeName,
+          ingredients: this.findRecipe.ingredients,
+          instructions: this.findRecipe.instructions,
+          notes: this.findRecipe.notes,
+
         });
-        this.findItem = null;
-        this.getItems();
+        this.findRecipe = null;
+        this.getrecipes();
         return true;
       } catch (error) {
         console.log(error);

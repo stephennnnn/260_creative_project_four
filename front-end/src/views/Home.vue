@@ -1,10 +1,12 @@
 <template>
 <div class="home">
   <section class="image-gallery">
-    <div class="image" v-for="item in items" :key="item.id">
-      <h2>{{item.title}}</h2>
-      <img :src="item.path" />
-      <p class="description">{{item.description}}</p>
+    <div class="image" v-for="recipe in recipes" :key="recipe.id">
+      <h2>{{recipe.recipeName}}</h2>
+      <img :src="recipe.path" />
+      <p class="info">Ingredients:<br>{{recipe.ingredients}}</p>
+      <p class="info">Instructions:<br>{{recipe.instructions}}</p>
+      <p class="info">Notes:<br>{{recipe.notes}}</p>
     </div>
   </section>
 </div>
@@ -17,17 +19,17 @@ export default {
   name: 'Home',
     data() {
     return {
-     items: [],
+     recipes: [],
     }
   },
   created() {
-    this.getItems();
+    this.getRecipes();
   },
   methods: {
-    async getItems() {
+    async getRecipes() {
       try {
-        let response = await axios.get("/api/items");
-        this.items = response.data;
+        let response = await axios.get("/api/recipes");
+        this.recipes = response.data;
         return true;
       } catch (error) {
         console.log(error);
@@ -66,7 +68,7 @@ export default {
   width: 100%;
 }
 
-.description {
+.info {
   color: grey;
 }
 

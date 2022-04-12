@@ -10,8 +10,8 @@
   <div class="add">
     <div class="form">
       <div class="holder">
-        <input type="file" name="photo" @change="fileChanged">
         <input v-model="recipeName" placeholder="Recipe Name">
+        <input type="file" name="photo" @change="fileChanged">
         <textarea v-model="ingredients" placeholder="Ingredients"></textarea>
         <textarea v-model="instructions" placeholder="Instructions"></textarea>
         <textarea v-model="notes" placeholder="Notes"></textarea>
@@ -38,8 +38,8 @@
     </div>
     <div class="upload" v-if="findRecipe">
       <div class="holder">
-        <img :src="findRecipe.path" />
         <input v-model="findRecipe.recipeName">
+        <img :src="findRecipe.path" />
         <textarea v-model="findRecipe.ingredients"></textarea>
         <textarea v-model="findRecipe.instructions"></textarea>
         <textarea v-model="findRecipe.notes"></textarea>

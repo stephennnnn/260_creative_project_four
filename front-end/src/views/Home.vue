@@ -1,8 +1,8 @@
 <template>
 <div class="home">
-  <section class="image-gallery">
-    <div class="image" v-for="recipe in recipes" :key="recipe.id">
-      <h2>{{recipe.recipeName}}</h2>
+  <section class="recipe-list">
+    <div class="recipe-box" v-for="recipe in recipes" :key="recipe.id">
+      <h2 style="text-align: center; font-size: 1.5em;">{{recipe.recipeName}}</h2>
       <img :src="recipe.path" />
       <p class="info">Ingredients:<br>{{recipe.ingredients}}</p>
       <p class="info">Instructions:<br>{{recipe.instructions}}</p>
@@ -41,7 +41,7 @@ export default {
 
 
 <style scoped>
-.image h2 {
+.recipe-box h2 {
   font-style: italic;
 }
 
@@ -52,44 +52,28 @@ export default {
   box-sizing: inherit;
 }
 
-.image-gallery {
+.recipe-list {
   column-gap: 3em;
+  column-count: 1;
 }
 
-.image {
+.recipe-box {
   margin: 0 0 1.5em;
   display: inline-block;
   width: 100%;
-  border: 1px solid grey;
+  border: 5px solid pink;
   padding: 10px;
 }
 
-.image img {
-  width: 100%;
+.recipe-box img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
 }
 
 .info {
   color: grey;
 }
 
-/* Masonry on large screens */
-@media only screen and (min-width: 1024px) {
-  .image-gallery {
-    column-count: 4;
-  }
-}
-
-/* Masonry on medium-sized screens */
-@media only screen and (max-width: 1023px) and (min-width: 768px) {
-  .image-gallery {
-    column-count: 3;
-  }
-}
-
-/* Masonry on small screens */
-@media only screen and (max-width: 767px) and (min-width: 540px) {
-  .image-gallery {
-    column-count: 2;
-  }
-}
 </style>

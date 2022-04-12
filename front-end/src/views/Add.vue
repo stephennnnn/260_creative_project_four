@@ -1,8 +1,6 @@
 <template>
 <div class="admin">
 
-  <h1>Add Recipes Here!</h1>
-
   <div class="heading">
     <h2>Add a Recipe</h2>
   </div>

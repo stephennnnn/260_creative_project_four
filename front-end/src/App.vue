@@ -18,6 +18,8 @@
 
   <div class="footer">
     <router-link to="/add">Add Recipes</router-link>
+    <br>
+    <a class="github-link" href="https://github.com/stephennnnn/260_creative_project_four">Github</a>
   </div>
 
 </div>
@@ -71,6 +73,9 @@ body {
   padding-top: 25px;
   background: grey;
   font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .footer a {
